@@ -6,67 +6,87 @@ export const FoodContext = createContext({
   cartFood: [],
   addItemToCart: () => {},
   updateItemQuantity: () => {},
+  totalPrice: 0,
+  totalQuantity: 0,
 });
 
 function shoppingCartReducer(state, action) {
-  if (action.type === 'ADD_ITEM') {
-    const updateItems = [...state.cartFood];
-    const { foods, productId } = action.payload;
+  switch (action.type) {
+    case 'ADD_ITEM': {
+      const updateItems = [...state.cartFood];
+      let { foods, productId } = action.payload;
 
-    const existingCartItemIdx = updateItems.findIndex((cartFood) => cartFood.id === productId);
-    const existingCartItem = updateItems[existingCartItemIdx];
+      const existingCartItemIdx = updateItems.findIndex((cartFood) => cartFood.id === productId);
+      const existingCartItem = updateItems[existingCartItemIdx];
 
-    if (existingCartItem) {
-      const updateItem = {
-        ...existingCartItem,
-        quantity: existingCartItem.quantity + 1,
+      if (existingCartItem) {
+        const updateItem = {
+          ...existingCartItem,
+          quantity: existingCartItem.quantity + 1,
+        };
+        updateItems[existingCartItemIdx] = updateItem;
+      } else {
+        const product = foods.find((product) => product.id === productId);
+        updateItems.push({
+          id: productId,
+          name: product.name,
+          price: product.price,
+          quantity: 1,
+        });
+      }
+
+      const totalPrice = updateItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+      const totalQuantity = state.totalQuantity +1;
+
+      return {
+        ...state,
+        cartFood: updateItems,
+        totalPrice,
+        totalQuantity
       };
-      updateItems[existingCartItemIdx] = updateItem;
-    } else {
-      const product = foods.find((product) => product.id === productId);
-      updateItems.push({
-        id: productId,
-        name: product.name,
-        price: product.price,
-        quantity: 1,
-      });
     }
-    return {
-      ...state,
-      cartFood: updateItems,
-    };
-  }
-  if (action.type === 'UPDATE_ITEM') {
-    const updatedItems = [...state.cartFood];
-    const updatedItemIndex = updatedItems.findIndex((food) => food.id === action.payload.productId);
+    case 'UPDATE_ITEM': {
+      const updatedItems = [...state.cartFood];
+      const updatedItemIndex = updatedItems.findIndex((food) => food.id === action.payload.productId);
 
-    const updatedItem = {
-      ...updatedItems[updatedItemIndex],
-    };
+      if (updatedItemIndex !== -1) {
+        const updatedItem = {
+          ...updatedItems[updatedItemIndex],
+        };
 
-    updatedItem.quantity += action.payload.amount;
+        updatedItem.quantity += action.payload.amount;
+        const totalQuantity = state.totalQuantity +1;
 
-    if (updatedItem.quantity <= 0) {
-      updatedItems.splice(updatedItemIndex, 1);
-    } else {
-      updatedItems[updatedItemIndex] = updatedItem;
+        if (updatedItem.quantity <= 0) {
+          updatedItems.splice(updatedItemIndex, 1);
+        } else {
+          updatedItems[updatedItemIndex] = updatedItem;
+        }
+
+        const totalPrice = updatedItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+
+        return {
+          ...state,
+          cartFood: updatedItems,
+          totalPrice,
+          totalQuantity
+        };
+      }
+      return state;
     }
-
-    return {
-      ...state,
-      cartFood: updatedItems,
-    };
+    default:
+      return state;
   }
-  return state;
 }
 
 export function FoodProvider({ children }) {
   const [foods, setFoods] = useState([]);
   const [shoppingCartState, shoppingCartDispatch] = useReducer(shoppingCartReducer, {
     cartFood: [],
+    totalPrice: 0,
+    totalQuantity: 0,
   });
 
-  // Food list get
   useEffect(() => {
     const fetchFood = async () => {
       try {
@@ -104,6 +124,8 @@ export function FoodProvider({ children }) {
     cartFood: shoppingCartState.cartFood,
     addItemToCart: handleAddItemToCart,
     updateItemQuantity: handleUpdateCartItemQuantity,
+    totalPrice: shoppingCartState.totalPrice.toFixed(2),
+    totalQuantity: shoppingCartState.totalQuantity
   };
 
   return <FoodContext.Provider value={ctxValue}>{children}</FoodContext.Provider>;
