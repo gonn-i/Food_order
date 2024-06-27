@@ -9,7 +9,7 @@ body {
   font-family: 'Raleway', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(#29251c, #2c2306);
+  background: linear-gradient(#1c2429, #06092c);
   color: #d9e2f1;
   min-height: 100vh;
 }
@@ -32,7 +32,7 @@ body {
   height: 4rem;
   object-fit: contain;
   border-radius: 50%;
-  border: 2px solid #ffc404;
+  border: 2px solid #0486ff;
 }
 
 #main-header button {
@@ -45,7 +45,7 @@ h1 {
   font-weight: 700;
   font-size: 2rem;
   margin: 0;
-  color: #ffc404;
+  color: #0486ff;
   letter-spacing: 0.2rem;
   text-transform: uppercase;
 }
@@ -62,11 +62,16 @@ h1 {
 }
 
 .meal-item {
-  background-color: #1d1a16;
+  background-color: #16191d;
   border-radius: 1rem;
   overflow: hidden;
   text-align: center;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s linear;
+}
+
+.meal-item:hover{
+  transform: scale(1.05);
 }
 
 .meal-item article {
@@ -94,8 +99,8 @@ h1 {
 
 .meal-item-price {
   display: inline-block;
-  background-color: #312c1d;
-  color: #ffc404;
+  background-color: #1b232d;
+  color:#0486ff;
   font-size: 0.9rem;
   font-weight: bold;
   padding: 0.5rem 2rem;
@@ -145,7 +150,7 @@ h1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0.5rem 0;
+  margin: 1rem 0;
 }
 
 .cart-item p {
@@ -165,8 +170,8 @@ h1 {
   height: 1.5rem;
   border-radius: 50%;
   border: none;
-  background-color: #312c1d;
-  color: #ffc404;
+  background-color: #b0b5bc;
+  color: #0486ff;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -175,7 +180,7 @@ h1 {
 .cart-item-actions button:hover,
 .cart-item-actions button:active {
   background-color: #1d1a16;
-  color: #ffab04;
+  color: #0052df;
 }
 
 .control {
@@ -207,8 +212,8 @@ h1 {
 .button {
   font: inherit;
   cursor: pointer;
-  background-color: #ffc404;
-  border: 1px solid #ffc404;
+  background-color: #0486ff;
+  border: 1px solid #0486ff;
   color: #1f1a09;
   padding: 0.5rem 1.5rem;
   border-radius: 4px;
@@ -216,8 +221,8 @@ h1 {
 
 .button:hover,
 .button:active {
-  background-color: #ffab04;
-  border-color: #ffab04;
+  background-color: #1f3f78;
+  border-color: #1f3f78;
   color: #1f1a09;
 }
 
@@ -226,12 +231,12 @@ h1 {
   cursor: pointer;
   background-color: transparent;
   border: none;
-  color: #ffc404;
+  color: #0486ff;
 }
 
 .text-button:hover,
 .text-button:active {
-  color: #ffab04;
+  color:#1f3f78;
 }
 
 .modal {
