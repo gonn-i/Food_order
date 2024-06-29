@@ -5,6 +5,8 @@
 
 
 [🔍Food Order](https://k9oni-food-order.netlify.app/)
+
+
 -프론트 부분만을 배포했기 때문에, 돌려보고 싶다면  git clone 후 backend 서버 켜주세요 🙂‍↕️
 
 
@@ -23,4 +25,8 @@
 
 
 5️⃣ FormData 로 입력 value 관리
+
+
+
+https://github.com/gonn-i/Food_order/assets/121345759/c6b57372-39a0-4e88-a4fa-5317d38a920c
 
