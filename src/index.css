@@ -70,7 +70,7 @@ h1 {
   transition: all 0.2s linear;
 }
 
-.meal-item:hover{
+.meal-item:hover {
   transform: scale(1.05);
 }
 
@@ -100,7 +100,7 @@ h1 {
 .meal-item-price {
   display: inline-block;
   background-color: #1b232d;
-  color:#0486ff;
+  color: #0486ff;
   font-size: 0.9rem;
   font-weight: bold;
   padding: 0.5rem 2rem;
@@ -236,7 +236,7 @@ h1 {
 
 .text-button:hover,
 .text-button:active {
-  color:#1f3f78;
+  color: #1f3f78;
 }
 
 .modal {
@@ -263,5 +263,49 @@ h1 {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner {
+  width: 205px;
+  height: 205px;
+  margin-top: 50px;
+  border: 10px solid rgba(34, 74, 255, 0.1);
+  border-top: 4px solid #9fafe6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+h3 {
+  font-family: 'Lato', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  margin: 75px 0;
+  color: #92caff;
+  letter-spacing: 0.2rem;
+  text-transform: uppercase;
+}
+
+h4 {
+  font-weight: bolder;
+  font-size: 1.3rem;
+  margin: 75px 0;
+  color: #000000;
+  letter-spacing: 0.2rem;
+  text-transform: uppercase;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }

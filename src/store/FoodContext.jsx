@@ -1,5 +1,7 @@
-import { createContext, useEffect, useReducer, useState } from 'react';
-import { getFood } from '../apis/api';
+// src/store/FoodContext.js
+
+import { createContext, useEffect, useReducer } from 'react';
+import { useApi } from '../hooks/useApi';
 
 export const FoodContext = createContext({
   foods: [],
@@ -36,13 +38,13 @@ function shoppingCartReducer(state, action) {
       }
 
       const totalPrice = updateItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-      const totalQuantity = state.totalQuantity +1;
+      const totalQuantity = state.totalQuantity + 1;
 
       return {
         ...state,
         cartFood: updateItems,
         totalPrice,
-        totalQuantity
+        totalQuantity,
       };
     }
     case 'UPDATE_ITEM': {
@@ -55,7 +57,7 @@ function shoppingCartReducer(state, action) {
         };
 
         updatedItem.quantity += action.payload.amount;
-        const totalQuantity = state.totalQuantity +1;
+        const totalQuantity = state.totalQuantity + action.payload.amount;
 
         if (updatedItem.quantity <= 0) {
           updatedItems.splice(updatedItemIndex, 1);
@@ -69,7 +71,7 @@ function shoppingCartReducer(state, action) {
           ...state,
           cartFood: updatedItems,
           totalPrice,
-          totalQuantity
+          totalQuantity,
         };
       }
       return state;
@@ -80,30 +82,23 @@ function shoppingCartReducer(state, action) {
 }
 
 export function FoodProvider({ children }) {
-  const [foods, setFoods] = useState([]);
+  const { loading, error, foodData, fetchFood } = useApi();
   const [shoppingCartState, shoppingCartDispatch] = useReducer(shoppingCartReducer, {
     cartFood: [],
     totalPrice: 0,
     totalQuantity: 0,
   });
 
+  // 음식 리스트에 대한 정보 가져옴 -> food
   useEffect(() => {
-    const fetchFood = async () => {
-      try {
-        const res = await getFood();
-        setFoods(res);
-      } catch (err) {
-        console.log(err.message);
-      }
-    };
     fetchFood();
-  }, []);
+  }, [fetchFood]);
 
   function handleAddItemToCart(id) {
     shoppingCartDispatch({
       type: 'ADD_ITEM',
       payload: {
-        foods,
+        foods: foodData || [],
         productId: id,
       },
     });
@@ -120,12 +115,14 @@ export function FoodProvider({ children }) {
   }
 
   const ctxValue = {
-    foods: foods,
+    foods: foodData || [],
     cartFood: shoppingCartState.cartFood,
     addItemToCart: handleAddItemToCart,
     updateItemQuantity: handleUpdateCartItemQuantity,
     totalPrice: shoppingCartState.totalPrice.toFixed(2),
-    totalQuantity: shoppingCartState.totalQuantity
+    totalQuantity: shoppingCartState.totalQuantity,
+    loading,
+    error,
   };
 
   return <FoodContext.Provider value={ctxValue}>{children}</FoodContext.Provider>;

@@ -1,26 +1,25 @@
-import {useRef, useContext } from 'react'
-import { FoodContext } from '../store/food-store';
-import Cart from './Cart';
+import { useContext } from 'react';
+import { FoodContext } from '../store/FoodContext';
+import ModalContext from '../store/ModalContext';
 
 export default function Header() {
-  const CartRef = useRef()
-  const {cartFood, totalQuantity} = useContext(FoodContext)
+  const { totalQuantity } = useContext(FoodContext);
+  const ModalContextCtx = useContext(ModalContext);
 
-
-  function cartClicked () {
-    CartRef.current.showModal();
+  function handleShowCart() {
+    ModalContextCtx.showCart();
   }
-
 
   return (
     <header id="main-header">
-      <Cart ref={CartRef}/>
       <div id="title">
         <h1>reactfood</h1>
       </div>
-      <span>
-        <button className="text-button" onClick={cartClicked}>Cart {`(${totalQuantity})`}</button>
-      </span>
+      <nav>
+        <button className="text-button" onClick={handleShowCart}>
+          Cart {`(${totalQuantity})`}
+        </button>
+      </nav>
     </header>
   );
 }
